@@ -1,10 +1,10 @@
 class BookingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_booking, only: [:show, :edit, :update, :destroy, :confirmation]
-  before_action :set_hotel_and_room, only: [:new, :create]
+  before_action :set_booking, only: [:show, :edit, :update, :destroy, :confirmation, :cancel]
+  before_action :set_hotel_and_room, only: [:new, :create, :check_availability]
 
   def index
-    @bookings = current_user.bookings.includes(room: :hotel)
+    @bookings = current_user.bookings.includes(room: :hotel).order(created_at: :desc)
   end
 
   def show
@@ -24,7 +24,25 @@ class BookingsController < ApplicationController
     end
 
     begin
-      @booking.total_price = calculate_total_price
+      start_date = Date.parse(booking_params[:start_date])
+      end_date = Date.parse(booking_params[:end_date])
+
+      if start_date < Date.today
+        redirect_to hotel_room_path(@hotel, @room), alert: "La date d'arrivée ne peut pas être dans le passé"
+        return
+      end
+
+      if end_date <= start_date
+        redirect_to hotel_room_path(@hotel, @room), alert: "La date de départ doit être après la date d'arrivée"
+        return
+      end
+
+      unless @room.available?(start_date, end_date)
+        redirect_to hotel_room_path(@hotel, @room), alert: "La chambre n'est pas disponible pour ces dates"
+        return
+      end
+
+      @booking.total_price = calculate_total_price(start_date, end_date)
       if @booking.save
         redirect_to confirmation_hotel_room_booking_path(@hotel, @room, @booking), notice: 'Réservation créée avec succès.'
       else
@@ -56,17 +74,41 @@ class BookingsController < ApplicationController
     redirect_to bookings_url, notice: 'Réservation supprimée avec succès.'
   end
 
+  def cancel
+    if @booking.start_date > Date.today
+      @booking.update(status: 'cancelled')
+      redirect_to bookings_path, notice: 'Réservation annulée avec succès.'
+    else
+      redirect_to bookings_path, alert: 'Impossible d\'annuler une réservation passée.'
+    end
+  end
+
   def check_availability
     begin
       start_date = Date.parse(params[:start_date])
       end_date = Date.parse(params[:end_date])
+      
+      if start_date < Date.today
+        render json: { 
+          error: "La date d'arrivée ne peut pas être dans le passé"
+        }, status: :unprocessable_entity
+        return
+      end
+
+      if end_date <= start_date
+        render json: { 
+          error: "La date de départ doit être après la date d'arrivée"
+        }, status: :unprocessable_entity
+        return
+      end
       
       is_available = @room.available?(start_date, end_date)
       total_price = calculate_total_price(start_date, end_date)
       
       render json: { 
         available: is_available,
-        total_price: total_price
+        total_price: total_price,
+        nights: (end_date - start_date).to_i
       }
     rescue Date::Error
       render json: { 

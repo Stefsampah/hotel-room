@@ -3,12 +3,19 @@ class Booking < ApplicationRecord
   belongs_to :room
   
   validates :start_date, :end_date, presence: true
+  validates :status, presence: true, inclusion: { in: %w[pending confirmed cancelled] }
   validate :end_date_after_start_date
   validate :dates_cannot_be_in_the_past
   validate :room_must_be_available
   validate :dates_cannot_be_empty
   
+  before_validation :set_default_status, on: :create
+  
   private
+  
+  def set_default_status
+    self.status ||= 'pending'
+  end
   
   def dates_cannot_be_empty
     if start_date.blank?

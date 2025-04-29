@@ -48,6 +48,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_090545) do
     t.date "start_date"
     t.date "end_date"
     t.decimal "total_price"
+    t.string "status", default: "pending"
     t.index ["room_id"], name: "index_bookings_on_room_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
