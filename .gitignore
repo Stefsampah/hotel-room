@@ -32,3 +32,35 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# macOS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Rails specific
+*.log
+tmp/
+log/
+public/assets/
+public/packs/
+public/packs-test/
+node_modules/
+yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
