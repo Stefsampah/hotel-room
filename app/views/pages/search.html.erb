@@ -1,0 +1,45 @@
+<h1>Pages#search</h1>
+<p>Find me in app/views/pages/search.html.erb</p>
+
+<!-- Search Form -->
+<div class="search-bar">
+  <%= form_tag search_path, method: :get, class: "search-form" do %>
+    <%= text_field_tag :query, params[:query], placeholder: "Location" %>
+    <%= date_field_tag :start_date, params[:start_date], placeholder: "Check-in" %>
+    <%= date_field_tag :end_date, params[:end_date], placeholder: "Check-out" %>
+    <%= submit_tag "Search", class: "search-button" %>
+  <% end %>
+</div>
+
+<!-- Results Section -->
+<div class="search-results">
+  <h2>Results</h2>
+  
+  <div class="results-grid">
+    <% @rooms.each do |room| %>
+      <%= link_to hotel_room_path(room.hotel, room), class: "room-card" do %>
+        <div class="room-image">
+          <% if room.main_image.attached? %>
+            <%= image_tag room.main_image %>
+          <% elsif room.hotel.main_image.attached? %>
+            <%= image_tag room.hotel.main_image %>
+          <% else %>
+            <div class="no-image">No image available</div>
+          <% end %>
+        </div>
+        <div class="room-info">
+          <p class="price"><%= number_to_currency(room.price) %> / night</p>
+          <p class="hotel-name"><%= room.hotel.name %></p>
+          <p class="location"><%= room.hotel.address %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<!-- Map Section -->
+<div id="map"
+     data-controller="map"
+     data-map-markers-value="<%= @markers.to_json %>"
+     style="height: 600px;">
+</div>

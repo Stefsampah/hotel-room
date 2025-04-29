@@ -8,3 +8,252 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is suggested that you use Sass (SCSS) for more clean and maintainable CSS.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #fff;
+}
+
+.hero-section h1 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+}
+
+/* Search Form */
+.search-form {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  gap: 10px;
+}
+
+.search-inputs {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.search-inputs input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.search-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Hotels Grid */
+.hotels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.hotel-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s;
+}
+
+.hotel-card:hover {
+  transform: translateY(-5px);
+}
+
+.hotel-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.hotel-info {
+  padding: 15px;
+}
+
+.price {
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Room Details */
+.room-details {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  padding: 20px;
+}
+
+.room-info-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.booking-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  position: sticky;
+  top: 20px;
+}
+
+.main-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Booking Form */
+.booking-form {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.book-button {
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Confirmation Page */
+.confirmation-page {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.confirmation-message {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Map */
+#map {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Map Info Window */
+.map-info-window {
+  padding: 10px;
+  max-width: 200px;
+}
+
+.map-info-window h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.map-info-window p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.view-rooms-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.view-rooms-button:hover {
+  background-color: #0056b3;
+}
+
+/* Gallery Images */
+.gallery-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.gallery-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.gallery-image:hover {
+  transform: scale(1.05);
+}
+
+.no-image {
+  width: 100%;
+  height: 200px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 14px;
+  border-radius: 8px 8px 0 0;
+}

@@ -1,0 +1,8 @@
+<div class="map-info-window">
+  <h3><%= hotel.name %></h3>
+  <p><%= hotel.address %></p>
+  <% if hotel.rooms.any? %>
+    <p class="price">From <%= number_to_currency(hotel.rooms.minimum(:price)) %> / night</p>
+  <% end %>
+  <%= link_to "View Rooms", hotel_rooms_path(hotel), class: "view-rooms-button" %>
+</div> 
