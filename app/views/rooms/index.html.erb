@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="search-bar bg-light p-3 mb-4">
+    <%= form_tag rooms_path, method: :get, class: "row g-3" do %>
+      <div class="col-md-3">
+        <%= text_field_tag :location, params[:location], class: "form-control", placeholder: "Location" %>
+      </div>
+      <div class="col-md-3">
+        <%= date_field_tag :start_date, params[:start_date], class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= date_field_tag :end_date, params[:end_date], class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= submit_tag "Search", class: "btn btn-dark w-100" %>
+      </div>
+    <% end %>
+  </div>
+
+  <h2 class="mb-4">Results</h2>
+
+  <div class="row">
+    <% @rooms.each do |room| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <% if room.photos.attached? %>
+            <%= image_tag room.photos.first, class: "card-img-top", height: 200, style: "object-fit: cover;" %>
+          <% else %>
+            <div class="bg-secondary" style="height: 200px;"></div>
+          <% end %>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0"><%= room.hotel.name %></h5>
+              <span class="badge bg-primary"><%= number_to_currency(room.price_per_night) %> / night</span>
+            </div>
+            <p class="card-text">
+              <small class="text-muted"><%= room.hotel.location %></small>
+            </p>
+            <p class="card-text"><%= room.description.truncate(100) %></p>
+            <%= link_to "View Details", hotel_room_path(room.hotel, room), class: "btn btn-outline-dark" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @rooms.empty? %>
+    <div class="text-center my-5">
+      <p class="lead">No rooms found matching your criteria.</p>
+    </div>
+  <% end %>
+</div> 

@@ -1,0 +1,80 @@
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <h1 class="mb-4 text-white" style="font-size: 3rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">Trouvez votre hébergement idéal !</h1>
+        
+        <div class="search-form-container bg-white p-4 rounded-3 shadow">
+          <%= form_tag rooms_path, method: :get, class: "search-form" do %>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <%= text_field_tag :location, params[:location], class: "form-control", placeholder: "Destination" %>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <%= date_field_tag :start_date, params[:start_date], class: "form-control", placeholder: "Date d'arrivée" %>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <%= date_field_tag :end_date, params[:end_date], class: "form-control", placeholder: "Date de départ" %>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <%= submit_tag "Rechercher", class: "btn btn-dark w-100" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <% if @featured_hotels.present? %>
+    <div class="featured-section">
+      <div class="container">
+        <h2>Découvrez nos plus beaux hôtels</h2>
+        <div class="row">
+          <% @featured_hotels.each do |hotel| %>
+            <div class="col-md-4 mb-4">
+              <div class="hotel-card card">
+                <div class="position-relative">
+                  <% if hotel.photo.attached? %>
+                    <%= image_tag hotel.photo, class: "card-img-top" %>
+                  <% else %>
+                    <div class="bg-secondary" style="height: 250px;"></div>
+                  <% end %>
+                  <% if hotel.rooms.any? %>
+                    <div class="price-tag">
+                      À partir de <%= number_to_currency(hotel.rooms.minimum(:price_per_night), unit: "€", format: "%n %u") %>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title"><%= hotel.name %></h5>
+                  <p class="location">
+                    <i class="fas fa-map-marker-alt"></i> <%= hotel.location %>
+                  </p>
+                  <div class="amenities-list">
+                    <% if hotel.amenities.present? %>
+                      <% hotel.amenities.first(3).each do |amenity| %>
+                        <span class="amenity-item">
+                          <i class="fas fa-check"></i> <%= amenity %>
+                        </span>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <%= link_to "Voir les chambres", hotel_path(hotel), class: "btn btn-outline-dark w-100 mt-3" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div> 
